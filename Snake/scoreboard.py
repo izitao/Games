@@ -12,20 +12,30 @@ class Scoreboard(Turtle):
         self.penup()
         self.hideturtle()
         self.goto(0, 280)
+        self.get_high_score()
         self.write_score()
 
-
     def write_score(self):
-        self.write(arg=f"Score: {self.score}", move=False, align=ALINGMENT, font=FONT)
+        self.clear()
+        self.write(arg=f"Score: {self.score} High Score: {self.high_score}", move=False, align=ALINGMENT, font=FONT)
 
     def food_collision(self):
         self.score += 1
-        self.clear()
         self.write_score()
 
-    def game_over(self):
-        self.goto(0, 0)
-        self.write(arg="GAME OVER", move=False, align=ALINGMENT, font=FONT)
+    def reset(self):
+        if self.score > self.high_score:
+            self.high_score = self.score
+            with open("data.txt", "w") as data:
+                data.write(str(self.high_score))
+        self.score = 0
+        self.write_score()
+    
+    def get_high_score(self):
+        with open("data.txt", mode="r") as data:
+            data = data.read()
+            self.high_score = int(data)
+
 
 
 
